@@ -1,0 +1,267 @@
+%BEGIN_FOLD % PREAMBLE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Jacobs Landscape Poster; % LaTeX Template; % Version 1.1 (14/06/14)
+% Created by: Computational Physics and Biophysics Group, Jacobs University
+% https://teamwork.jacobs-university.de:8443/confluence/display/CoPandBiG/LaTeX+Poster
+% Further modified by: Nathaniel Johnston (nathaniel@njohnston.ca)
+% This template has been downloaded from: http://www.LaTeXTemplates.com
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%
+%\PassOptionsToPackage{draft}{graphicx}
+\documentclass[]{beamer} %draft, final
+\usepackage[scale=1.54]{beamerposter} % Use the beamerposter package for laying out the poster
+\usetheme{confposter} % Use the confposter theme supplied with this template
+\setbeamercolor{block title}{fg=ngreen,bg=white} % Colors of the block titles
+\setbeamercolor{block body}{fg=black,bg=white} % Colors of the body of blocks
+\setbeamercolor{block alerted title}{fg=white,bg=dblue!70} % Colors of the highlighted block titles
+\setbeamercolor{block alerted body}{fg=black,bg=dblue!10} % Colors of the body of highlighted blocks
+% Many more colors are available for use in beamerthemeconfposter.sty
+
+%----------------------------------------------------------------------------------------
+% Define the column widths and overall poster size
+% To set effective sepwid, onecolwid and twocolwid values, first choose how many columns you want and how much separation you want between columns
+% In this template, the separation width chosen is 0.024 of the paper width and a 4-column layout
+% onecolwid should therefore be (1-(# of columns+1)*sepwid)/# of columns e.g. (1-(4+1)*0.024)/4 = 0.22
+% Set twocolwid to be (2*onecolwid)+sepwid = 0.464
+% Set threecolwid to be (3*onecolwid)+2*sepwid = 0.708
+%
+\newlength{\sepwid}
+\newlength{\onecolwid}
+\newlength{\twocolwid}
+\newlength{\threecolwid}
+\setlength{\paperwidth}{48in} % A0 width: 46.8in
+\setlength{\paperheight}{36in} % A0 height: 33.1in
+\setlength{\sepwid}{0.024\paperwidth} % Separation width (white space) between columns
+\setlength{\onecolwid}{0.26\paperwidth} % Width of one column
+\setlength{\twocolwid}{0.524\paperwidth} % Width of two columns
+\setlength{\threecolwid}{0.708\paperwidth} % Width of three columns
+\setlength{\topmargin}{-0.05in} % Reduce the top margin size
+
+%-----------------------------------------------------------
+% Other packages and commands
+\usepackage{graphicx}  % Required for including images
+\usepackage{booktabs} % Top and bottom rules for tables
+\usepackage{multirow}
+%\usepackage[backend=bibtex,firstinits=true]{biblatex}
+%\addbibresource{../master_ref.bib}
+
+\newcommand{\bR}{\mathbb{R}}
+\newcommand{\abs}[1]{\left\vert #1 \right\vert}
+\DeclareMathOperator{\Div}{div}
+
+%END_FOLD
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION 
+%
+\title{Linearly Stabilized Schemes for Nonlinear Parabolic PDEs } % Poster title
+\author{Kevin Chow and Steve Ruuth} % Author(s)
+\institute{Department of Mathematics, Simon Fraser University} % Institution(s)
+
+
+\begin{document}	
+	\addtobeamertemplate{block end}{}{\vspace*{2ex}} % White space under blocks
+	\addtobeamertemplate{block alerted end}{}{\vspace*{2ex}} % White space under highlighted (alert) blocks
+	\setlength{\belowcaptionskip}{2ex} % White space under figures
+	\setlength\belowdisplayshortskip{2ex} % White space under equations
+	\begin{frame}[t] % OPENING BEAMER FRAME
+		\begin{columns}[t] % SETTING UP MULTICOLUMNS. The whole poster consists of three major columns, the second of which is split into two columns twice - the [t] option aligns each column's content to the top
+			\begin{column}{0.9\sepwid}\end{column} % EMPTY SPACER COLUMN
+			\begin{column}{2.65\onecolwid}  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+				\begin{columns}[t,totalwidth=2.55\onecolwid]%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+					\begin{column}{1.02\onecolwid}\vspace{-0.8in}% FIRST
+						%BEGIN_FOLD % OBJECTIVES BLOCK
+						%----------------------------------------------------------------------------------------
+						%	OBJECTIVES
+						%
+						% \begin{alertblock}{Objectives}
+						% Words
+						% \end{alertblock}
+						%END_FOLD
+						\begin{block}{Introduction} % INTRODUCTION 
+							We seek an effective strategy to handling the severe time step restrictions resulting from the spatial discretization of \textbf{nonlinear parabolic PDEs}. 
+							%	\begin{align}
+							%		u' = f(u,t), \quad u(0) = u_0,
+							%		\label{nonlinear ODE}
+							%	\end{align}
+							%	where $u \in \mathbb{R}^N$ and $f: \bR^N\times \bR \to \bR^N$ is a nonlinear function coming from a spatial discretization of a nonlinear parabolic PDE. 
+							
+							%	Select examples we've encountered: 
+							%	\begin{align}
+							%		u_t &= \abs{\nabla u}\Div\nabla\phi(\nabla u),
+							%		\label{eq: mcf}
+							%		\\
+							%		u_t &= -\Delta\Div\left(\frac{\nabla u}{\sqrt{\abs{\nabla u}^2 + \epsilon^2}} \right) + \lambda(f - u),
+							%		\label{eq: img proc 1}
+							%		\\
+							%		u_t &= -\Delta(\arctan(\Delta u)) + \lambda(f - u),
+							%		\label{eq: img proc 2}
+							%		\\
+							%		u_t &= -\Delta^2 u - u - (1-3m^2)\Delta u + \Delta(u^3 + 3mu^2)
+							%		\label{mCH}
+							%		\\
+							%		u_t &= -\Delta^2_S u + \Delta_S (u^3 - u).
+							%		\label{CH}
+							%	\end{align}
+							%	
+							%	The above equations are relevant in a broad range of applications:
+							%	\begin{itemize}
+							%		\item Simulating inteface motion.
+							%		\item Fluid flow. 
+							%		\item Image processing (denoising, inpainting).
+							%		\item Self-assembly of diblock-copolymers.
+							%		\item Phase separation 
+							%	\end{itemize} 
+							%	These are but some examples that touch on a wide range of applications. Mean curvature flow \eqref{eq: mcf} has uses in simulating interface motion \cite{Obermana}, fluid flow [CITE SMEREKA], and applications in image processing [FIND REFERENCE HERE]. Fourth order equations such as \eqref{eq: img proc 1},\eqref{eq: img proc 2} have very recently been applied in the area of image inpainting [CITE SCHOENLIEB]. The modified Cahn-Hilliard \eqref{mCH} presented here has found its way to modelling the self-assembly of diblock-copolymers. A simpler variant, the Cahn-Hilliard \eqref{CH}, describes phase separation of two component mixtures and has applications to the processing of binary images [CITE BERTOZZI HERE].
+						\end{block}
+						
+						\begin{block}{The Approach} % APPROACH
+							%	Under assumptions that give us \eqref{nonlinear ODE}, we then add and subtract a reasonably chosen (discrete) linear operator, $L_h u$, and solve the modified equation in an implicit-explicit (IMEX) manner: 
+							Typical implicit methods require solution to a nonlinear system. We modify the equation with a well-chosen linear system and solve in an implicit-explicit (IMEX) manner: 
+							\begin{align}
+							u' = \underbrace{pL_h u}_{\textrm{implicit}} + \underbrace{F(u,t) - pL_h u}_{\textrm{explicit}},
+							\quad p>0.
+							\end{align}
+							
+							%	A first order implementation results from applying the forward and backward Euler schemes. [MAYBE A HISTORICAL NOTE HERE]. This was then extended to second order by Duchemin and Eggers [CITE] using Richardson extrapolation. In their work, they found it necessary to select $p>p_0$ to guarantee absolute stability for any $\Delta t > 0$. 
+							
+							%	Our approach for higher order time stepping is to apply higher order IMEX linear multistep methods (IMEX LMM) [CITE]. 
+							
+							%	Determination of $p_0$ is outlined next.
+							
+						\end{block}
+					\end{column} % CLOSE FIRST 
+					\begin{column}{-0.25\sepwid}\end{column} % EMPTY SPACER COLUMN
+					\begin{column}{0.725\twocolwid}\vspace{-0.8in} % OPEN SECOND COLUMN. Begin a column which is two columns wide (column 2)
+						\begin{block}{A Modified Test Equation}
+							\begin{columns}[t,totalwidth=0.750\twocolwid] % SPLIT SECOND COLUMN.
+								\begin{column}{0.77\onecolwid}%\vspace{-.6in} % FIRST OF SPLIT. The first column within column 2 (column 2.1)
+									%	To derive a lower bound on $p$, we apply the IMEX LMM of interest to the modified test equation 
+									We apply IMEX linear multistep methods (LMM) \cite{Ascher1995} to the \textbf{modified test equation}
+									%To analyze the schemes we propose, we introduce the modified test equation
+									\begin{align}
+									u' = p\lambda u + (1-p)\lambda u.
+									\label{modified test eqn}
+									\end{align} 
+									One views $\lambda$ as an eigenvalue of the Jacobian of the linearized $F$.
+									
+									%We apply IMEX linear multistep methods (LMM) to \eqref{modified test eqn} and determine the range for which the parameter $p$ admits unconditional absolute stability. 
+									
+									%	Application of a $k$-step IMEX LMM along with the ansatz $u_n = \xi^n$, we get a degree $k$ polynomial equation
+									%	\begin{align*}
+									%		0= \rho(\xi) 
+									%		- z\sigma(\xi).
+									%	\end{align*}
+									
+									%	We then apply the theory of von Neumann polynomials [CITE STRIKWERDA] to precisely determined values of $p$ admitting unconditional stability.
+									Our analysis is predicated on determining the range of $p$ for which the scheme is absolutely stable for all $\Delta t > 0$.
+									%The theory of von Neumann polynomials is used to determine $p$ admitting unconditional absolute stability.							
+								\end{column} % CLOSE FIRST OF SPLIT
+								\begin{column}{0.01\sepwid}\end{column}
+								\begin{column}{.70\onecolwid}\vspace{-1.15in} % SECOND OF SPLIT. 						
+									\begin{table}[htb!]
+										\raggedleft
+										\caption{Parameter ranges for select IMEX LMM.}
+										\begin{tabular}{lllr}
+											\toprule
+											Order && Method & $p\in$
+											\\ \midrule 
+											1 && IMEX-Euler & $(1/2,\infty)$ 
+											\\ [.5cm]%\cmidrule{1-3}
+											2 && SBDF2 & $(3/4,\infty)$
+											\\
+											&& CNAB & $(1,\infty)$ 
+											\\
+											&& mCNAB & $(8/9,\infty)$ 
+											\\
+											&& CNLF & $(1/2,\infty)$
+											\\[.5cm] %\cmidrule{1-3}
+											3 && SBDF3 & $(7/8,2)$ 
+											\\[.5cm]% \cmidrule{1-3}
+											4 && SBDF4 & $(11/12,5/4)$
+											\\
+											\bottomrule
+										\end{tabular}
+									\end{table} 
+								\end{column} % CLOSE SECOND OF SPLIT
+							\end{columns} % CLOSE SPLITTED. End of the split of column 2 - any content after this will now take up 2 columns width
+						\end{block}
+						
+						
+					\end{column} % CLOSE SECOND COLUMN
+				\end{columns} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+				
+%				\begin{alertblock}{Important Result} % IMPORTANT RESULT
+%					Lorem ipsum dolor \textbf{sit amet}, consectetur adipiscing elit. Sed commodo molestie porta. Sed ultrices scelerisque sapien ac commodo. Donec ut volutpat elit.
+%				\end{alertblock} 
+\vspace{-0.15in}
+\begin{block}{Examples and Applications}
+Nonlinear parabolic PDEs are of significant interest with applications in numerous areas. 
+	%The methods are widely applicable. 
+We present here examples from simulating interface motion, image processing, and the modelling of phase separation in binary alloys.
+\vspace{-.15in}
+	\begin{figure}
+		\begin{minipage}{0.85\onecolwid}\centering
+\includegraphics[width=0.8\onecolwid]{aniso_mcf.pdf}
+			\caption{Black curve marks the initial state.}
+		\end{minipage}
+		\begin{minipage}{0.80\onecolwid}\centering 
+\includegraphics[width=0.76\onecolwid]{bird_inpaint}
+	\caption{Image inpainting \cite{Schonlieb2011}: (above) damaged photograph, (below) restored image.}
+		\end{minipage}
+		\begin{minipage}{0.85\onecolwid}\centering
+\includegraphics[width=0.898\onecolwid]{ch_moo3}
+			\caption{Spinodal decomposition starting from random initial conditions on a cow-shaped surface.}
+		\end{minipage}
+	\end{figure}
+\end{block}
+				
+			\end{column} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+			
+			\begin{column}{0.5\sepwid}\end{column} % EMPTY SPACER COLUMN
+			\begin{column}{0.975\onecolwid} % FINAL COLUMN. For conclusion, summary, future work, references
+				\begin{block}{Related Works}\vspace{-0.5cm}
+				   \small{A similar approach in \cite{Duchemin2014} recommends Richardson extrapolation (EIN) for the push to second order, as was suggested in \cite{Smereka2003semiimplicit} but not implemented. Our experiments found this to be less efficient and showed a reduction in the order of accuracy when large values of $p$ were needed.}
+				\end{block}
+\vspace{-1.cm}
+\begin{figure}\centering
+\includegraphics[width=0.9\onecolwid]{nl5_conv}
+\caption{Rates of convergence to an exact solution to $u_t = \Delta(u^5)$.}
+\end{figure}
+				\vspace{-2.15cm}
+				\begin{block}{Summary} \vspace{-0.5cm}% CONCLUSION 
+					\small{The proposed methods deliver a significant improvement in efficiency over commonly used numerical methods and are remarkably simple to implement.  The second order methods (SBDF2, CNAB) are recommended as an unbounded parameter range is crucial for practical applications.}
+				\end{block}
+				
+%				\begin{block}{Additional Information} % ADDITIONAL INFORMATION
+%					Maecenas ultricies feugiat velit non mattis. Fusce tempus arcu id ligula varius dictum. 
+%					\begin{itemize}
+%						\item Curabitur pellentesque dignissim
+%						\item Eu facilisis est tempus quis
+%						\item Duis porta consequat lorem
+%					\end{itemize}
+%				\end{block}
+				\vspace{-1.70cm}
+				\begin{block}{References}\vspace{-1.0cm}
+					%\nocite{} % Insert publications even if they are not cited in the poster
+					%\small{\bibliographystyle{unsrt}
+					%\bibliography{C:/Users/KC/Desktop/master_ref}\vspace{0.75in}}
+					\tiny{\bibliographystyle{myunsrt}
+					\bibliography{/home/kjc19/Desktop/library}}
+				\end{block}
+				
+				\setbeamercolor{block title}{fg=red,bg=white} % Change the block title color
+%				\begin{block}{Acknowledgements} % ACKNOWLEDGEMENTS
+%					\small{\rmfamily{Nam mollis tristique neque eu luctus. Suspendisse rutrum congue nisi sed convallis. Aenean id neque dolor. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.}} 
+%				\end{block}							
+			\end{column} % CLOSE FINAL COLUMN
+		\end{columns} % CLOSE OVERALL COLUMN
+		
+	\end{frame} % CLOSE BEAMER FRAME	
+\end{document} % CLOSE DOC
