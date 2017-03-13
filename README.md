@@ -1,5 +1,5 @@
-# Computational Math Day 2016 Poster
+# SFU Computational Math Day 2016 Poster
 
-This is the poster I presented at the SFU Computational Math Day 2016. The work in the poster is based on my masters research. In-depth information can be found in the Thesis-B repository, where a version of my thesis can be found. Samples codes can be found in the thesis as well as in the Research Codes repository.
+I presented this poster at the annual SFU Computation Math Day in 2016. The work detailed in the poster is but a snapshot of my masters research. Full details can be found in my [thesis](https://github.com/kevstter/Thesis-B).
 
-The poster can be viewed in main.pdf. The other files should be enough to compile the tex document to use as a template as long as the document is set to demo mode or the includegraphics lines are commented out.
+The poster may be viewed in [main.pdf](main.pdf). To compile the tex document, it will be necessary to set to demo mode or comment out the lines that call includegraphics as the figures have not been included here. However, the codes generating the figures may be found in the [Research-Codes](https://github.com/kevstter/Research-Codes) repository.
